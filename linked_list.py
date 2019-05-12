@@ -1,128 +1,92 @@
-class Node:
-    '''This is a class for Node representation'''
+class LinkedList(object):
+    class Node(object):
+        """
+        Inner class of LinkedList. Contains a blueprint for a node of the LinkedList
+        """
 
-    def __init__(self, data):
-        '''Initialises a Node class'''
-        self.data = data
-        self.next = None
-
-    def getData(self):
-        '''
-        Returns a data of Node
-        :return: str
-        '''
-        return self.data
-
-    def getNext(self):
-        '''
-        Returns the next Node.
-        :return: the next Node
-        '''
-        return self.next
-
-    def setNext(self, next):
-        '''
-        Sets a next element to next value
-        :param next: str
-        '''
-        self.next = next
-
-
-class Set:
-    '''This is a class for LinkedList representation'''
+        def __init__(self, data, next=None):
+            """
+            Initializes a List node with payload data and link n
+            """
+            self.data = data
+            self.next = next
 
     def __init__(self):
-        '''Initialises a LinkedList'''
+        """
+        Initializes a LinkedList and sets list head to None
+        """
         self.head = None
 
-    def add(self, value):
-        '''
-        Adds an element to a LinkedList
-        :param value: str
-        '''
-        temp = Node(value)
-        temp.setNext(self.head)
-        self.head = temp
-
-    def get(self):
-        '''Prints all the elements which are IN LinkedList'''
-        nodeA = self.head
-        while nodeA is not None:
-            print(nodeA.getData())
-            nodeA = nodeA.next
+    def insert(self, data):
+        """
+        Adds an item with payload data to beginning of the list
+        in O(1) time
+        """
+        Node = self.Node(data, self.head)
+        self.head = Node
 
     def __len__(self):
-        '''
-        Returns the length of self
-        :return: int
-        '''
+        """
+        Returns the current size of the list. O(n), linear time
+        """
         current = self.head
         count = 0
-        while current != None:
+        while current:
             count += 1
-            current = current.getNext()
+            current = current.next
         return count
 
-    def search(self, value):
-        '''
-        Searches the value in LinkedList
-        :param value: str
-        :return: bool
-        '''
+    def search(self, data):
+        """
+        Searches the list for a node with payload data. Returns the node object or None if not found. Time complexity is O(n) in worst case.
+        """
         current = self.head
         found = False
-        while current != None and not found:
-            if current.getData() == value:
+        while current and not found:
+            if current.data == data:
                 found = True
             else:
-                current = current.getNext()
-                return found
+                current = current.next
+        if not current:
+            return None
+        return found
 
-    def remove(self, value):
-        '''Removes a value from LinkedList'''
+    def delete(self, data):
+        """
+        Searches the list for a node with payload data. Returns the node object or None if not found. Time complexity is O(n) in worst case.
+        """
         current = self.head
-        previous = None
+        predataious = None
         found = False
-        while not found:
-            if current.getData() == value:
+        while current and not found:
+            if current.data == data:
                 found = True
             else:
-                previous = current
-                current = current.getNext()
-        if previous == None:
-            self.head = current.getNext()
+                predataious = current
+                current = current.next
+        # nothing found, return None
+        if not current:
+            return None
+        # the case where first item is being deleted
+        if not predataious:
+            self.head = current.next
+        # item from inside of the list is being deleted
         else:
-            previous.setNext(current.getNext())
+            predataious.next = current.next
 
-    def remove_all(self):
-        self.head = None
+        return current
 
-    def __contains__(self, value):
+    def __iter__(self):
         """
-        Checks existence of value in the Multiset.
-        __contains__: Multiset Any -> Bool
-        :param value: the value to be check.
-        :return: True if Multiset is in the Multiset and False otherwise.
+        Iterate odataer the linked list.
         """
         current = self.head
-        while current != None:
-            if current.getData() == value:
-                return True
-            else:
-                current = current.getNext()
-        return False
+        while current is not None:
+            yield current.data
+            current = current.next
 
-
-set = Set()
-for i in range(10):
-    set.add(i)
-# set.get()
-# print(len(set))
-# set.remove(9)
-# set.get()
-# print(set.search(9))
-# for i in range(10):
-#     if i in set:
-#         print(i)
-set.remove_all()
-set.get()
+    def __str__(self):
+        """
+        Prints the current list in the form of a Python list
+        """
+        return str(list(self))
