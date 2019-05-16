@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>app module &#8212; visitevents 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-app">
+<span id="app-module"></span><h1>app module<a class="headerlink" href="#module-app" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="app.Configuration">
+<em class="property">class </em><code class="descclassname">app.</code><code class="descname">Configuration</code><a class="headerlink" href="#app.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a class which decribes an app configuration.</p>
+<dl class="attribute">
+<dt id="app.Configuration.DEBUG">
+<code class="descname">DEBUG</code><em class="property"> = True</em><a class="headerlink" href="#app.Configuration.DEBUG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Configuration.WTF_CSRF_ENABLED">
+<code class="descname">WTF_CSRF_ENABLED</code><em class="property"> = False</em><a class="headerlink" href="#app.Configuration.WTF_CSRF_ENABLED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="app.Event">
+<em class="property">class </em><code class="descclassname">app.</code><code class="descname">Event</code><span class="sig-paren">(</span><em>id_eventful_com</em>, <em>title</em>, <em>start_time</em>, <em>city_name</em>, <em>venue_address</em>, <em>latitude</em>, <em>longitude</em>, <em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#app.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>Summary line.</p>
+<p>This is a class for an Event representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – str</p></li>
+<li><p><strong>id_eventful_com</strong> – str</p></li>
+<li><p><strong>latitude</strong> – float</p></li>
+<li><p><strong>longitude</strong> – float</p></li>
+<li><p><strong>start_time</strong> – str</p></li>
+<li><p><strong>title</strong> – str</p></li>
+<li><p><strong>url</strong> – str</p></li>
+<li><p><strong>venue_address</strong> – str</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="app.Event.city_name">
+<code class="descname">city_name</code><a class="headerlink" href="#app.Event.city_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.id">
+<code class="descname">id</code><a class="headerlink" href="#app.Event.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.id_eventful_com">
+<code class="descname">id_eventful_com</code><a class="headerlink" href="#app.Event.id_eventful_com" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.latitude">
+<code class="descname">latitude</code><a class="headerlink" href="#app.Event.latitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.longitude">
+<code class="descname">longitude</code><a class="headerlink" href="#app.Event.longitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#app.Event.start_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.title">
+<code class="descname">title</code><a class="headerlink" href="#app.Event.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.url">
+<code class="descname">url</code><a class="headerlink" href="#app.Event.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.Event.venue_address">
+<code class="descname">venue_address</code><a class="headerlink" href="#app.Event.venue_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="app.User">
+<em class="property">class </em><code class="descclassname">app.</code><code class="descname">User</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
+<p>This a class for User representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – str</p></li>
+<li><p><strong>email</strong> – str</p></li>
+<li><p><strong>name</strong> – str</p></li>
+<li><p><strong>role</strong> – str</p></li>
+<li><p><strong>password</strong> – str</p></li>
+<li><p><strong>confirmed</strong> – boolean</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="app.User.confirmed">
+<code class="descname">confirmed</code><a class="headerlink" href="#app.User.confirmed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.User.email">
+<code class="descname">email</code><a class="headerlink" href="#app.User.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.User.id">
+<code class="descname">id</code><a class="headerlink" href="#app.User.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.User.name">
+<code class="descname">name</code><a class="headerlink" href="#app.User.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.User.password">
+<code class="descname">password</code><a class="headerlink" href="#app.User.password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.User.role">
+<code class="descname">role</code><a class="headerlink" href="#app.User.role" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="app.confirm_email">
+<code class="descclassname">app.</code><code class="descname">confirm_email</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.confirm_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template to confirm an email.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.email_already_exists">
+<code class="descclassname">app.</code><code class="descname">email_already_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.email_already_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template if email already exists.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.event">
+<code class="descclassname">app.</code><code class="descname">event</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds event objects on the map and to database session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> – str</p>
+</dd>
+</dl>
+<p>Returns rendered template of eventful site
+:returns: html file ‘event.html’</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.index">
+<code class="descclassname">app.</code><code class="descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template of html code.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.location">
+<code class="descclassname">app.</code><code class="descname">location</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template of location code.
+:returns: html file ‘location html’</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.login">
+<code class="descclassname">app.</code><code class="descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template of login.html.
+:returns: login.html</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.map">
+<code class="descclassname">app.</code><code class="descname">map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template of map page.
+:returns: html file ‘map html’</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.register">
+<code class="descclassname">app.</code><code class="descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template of html code for a RegistrationForm</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.sign_out">
+<code class="descclassname">app.</code><code class="descname">sign_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.sign_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template to sign out.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.success_registration">
+<code class="descclassname">app.</code><code class="descname">success_registration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.success_registration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template to prove the success of registration.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">visitevents</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Petrivska Marianna.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/rst/app.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

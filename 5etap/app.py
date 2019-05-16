@@ -19,6 +19,9 @@ app = Flask(__name__)
 
 
 class Configuration:
+    '''
+    This is a class which decribes an app configuration.
+    '''
     DEBUG = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///c:/1/cursova/new/untitled/data/data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -41,6 +44,18 @@ mail = Mail(app)
 
 # Models ###############################################################################
 class User(db.Model):
+    """
+    This a class for User representation.
+
+    Parameters:
+    ---------
+    :param id: str
+    :param email: str
+    :param name: str
+    :param role: str
+    :param password: str
+    :param confirmed: boolean
+    """
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(128), unique=True, index=True)
@@ -51,6 +66,21 @@ class User(db.Model):
 
 
 class Event(db.Model):
+    """Summary line.
+
+    This is a class for an Event representation.
+
+    Parameters:
+    ---------
+    :param id: str
+    :param id_eventful_com: str
+    :param latitude: float
+    :param longitude: float
+    :param start_time: str
+    :param title: str
+    :param url: str
+    :param venue_address: str
+    """
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     id_eventful_com = db.Column(db.Integer, unique=True, index=True)
@@ -63,6 +93,9 @@ class Event(db.Model):
     url = db.Column(db.Text)
 
     def __init__(self, id_eventful_com, title, start_time, city_name, venue_address, latitude, longitude, url):
+        '''
+        Initialises a class Event
+        '''
         self.id_eventful_com = id_eventful_com
         self.title = title
         self.start_time = start_time
@@ -83,6 +116,9 @@ events_list = LinkedList()
 
 @app.route('/')
 def index():
+    '''
+    Returns the rendered template of html code.
+    '''
     today = str(date.today())
     user_key = 'SSqPdQ5xLbF6dwN2'
     event_location = request.args.get('city', '')
@@ -143,16 +179,37 @@ def index():
 
 @app.route('/map')
 def map():
+    '''
+    Returns the rendered template of map page.
+    Returns:
+        html file 'map html'
+    '''
     return render_template('map.html')
 
 
 @app.route('/location')
 def location():
+    '''
+    Returns the rendered template of location code.
+    Returns:
+        html file 'location html'
+    '''
     return render_template('location.html')
 
 
 @app.route('/event/<id>')
 def event(id):
+    '''
+
+    Adds event objects on the map and to database session.
+
+    Parameters:
+        id:str
+    -----
+    Returns rendered template of eventful site
+    Returns:
+        html file 'event.html'
+    '''
     for i in events_list:
         if i.id_eventful_com == id:
             geolocator = geopy.Nominatim(user_agent='Event')
@@ -182,7 +239,15 @@ def event(id):
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    '''
+    Returns the rendered template of html code for a RegistrationForm
+    '''
+
     class RegistrationForm(FlaskForm):
+        '''Initialises a RegistrationForm.
+        Returns:
+            'register.html'
+        '''
         email = StringField('email', validators=[DataRequired(), Email()])
         name = StringField('name', validators=[DataRequired()])
         password1 = PasswordField('password', validators=[DataRequired()])
@@ -208,6 +273,10 @@ def register():
             session['unconfirmed_user'] = {'email': email, 'name': name}
 
             def del_if_unconfirmed():
+                '''Deletes a form information if it is unconfirmed
+                Returns:
+                    register.html
+                '''
                 time.sleep(3600)
                 user = User.query.filter_by(email=email).first()
                 if not user.confirmed:
@@ -226,7 +295,14 @@ def register():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    '''
+    Returns the rendered template of login.html.
+    Returns:
+        login.html
+    '''
+
     class LoginForm(FlaskForm):
+        '''This is a class for LoginForm representation.'''
         email = StringField('email', validators=[DataRequired(), Email()])
         password = PasswordField('password', validators=[DataRequired()])
 
@@ -248,6 +324,9 @@ def login():
 
 @app.route('/sign_out')
 def sign_out():
+    '''
+   Returns the rendered template to sign out.
+   '''
     if session.get('email', False):
         session.pop('email')
     return redirect(url_for('index'))
@@ -255,17 +334,26 @@ def sign_out():
 
 @app.route('/email')
 def confirm_email():
+    '''
+    Returns the rendered template to confirm an email.
+    '''
     return render_template('confirm_email.html')
 
 
 @app.route('/success_registration')
 def success_registration():
+    '''
+    Returns the rendered template to prove the success of registration.
+    '''
     User.query.filter_by(email=session.get('unconfirmed_user', '')['email']).first().confirmed = True
     return render_template('register_success.html')
 
 
 @app.route('/email_already_exists')
 def email_already_exists():
+    '''
+     Returns the rendered template if email already exists.
+     '''
     return render_template('register_success.html')
 
 
