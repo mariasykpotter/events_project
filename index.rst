@@ -8,7 +8,8 @@ Welcome to visitevents's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :numbered:
+   app
    rst/app
    rst/linked_list
 
