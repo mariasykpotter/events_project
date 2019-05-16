@@ -53,7 +53,6 @@
 <dt id="app.Event">
 <em class="property">class </em><code class="descclassname">app.</code><code class="descname">Event</code><span class="sig-paren">(</span><em>id_eventful_com</em>, <em>title</em>, <em>start_time</em>, <em>city_name</em>, <em>venue_address</em>, <em>latitude</em>, <em>longitude</em>, <em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#app.Event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Model</span></code></p>
-<p>Summary line.</p>
 <p>This is a class for an Event representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -144,6 +143,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="app.User.events">
+<code class="descname">events</code><a class="headerlink" href="#app.User.events" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="app.User.id">
 <code class="descname">id</code><a class="headerlink" href="#app.User.id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -211,10 +215,22 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="app.login_error">
+<code class="descclassname">app.</code><code class="descname">login_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.login_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template if user enters incorrect data.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="app.map">
 <code class="descclassname">app.</code><code class="descname">map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the rendered template of map page.
 :returns: html file ‘map html’</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.profile">
+<code class="descclassname">app.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>user_id</em><span class="sig-paren">)</span><a class="headerlink" href="#app.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the rendered template of html code for user history page.</p>
 </dd></dl>
 
 <dl class="function">

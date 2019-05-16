@@ -23,7 +23,7 @@ class Configuration:
     This is a class which decribes an app configuration.
     '''
     DEBUG = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///c:/1/cursova/new/untitled/data/data.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///c:/1/cursova/new/5etap/data/data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['SECRET_KEY'] = 'very_secret_key'
@@ -41,8 +41,15 @@ app.config.from_object(Configuration)
 db = SQLAlchemy(app)
 mail = Mail(app)
 
-
 # Models ###############################################################################
+
+
+history = db.Table('history',
+                   db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                   db.Column('event_id', db.Integer, db.ForeignKey('events.id'))
+                   )
+
+
 class User(db.Model):
     """
     This a class for User representation.
@@ -63,10 +70,11 @@ class User(db.Model):
     password = db.Column(db.String(128))
     role = db.Column(db.String(5), default='user')
     confirmed = db.Column(db.Boolean, default=False)
+    events = db.relationship('Event', secondary=history, backref=db.backref('users', lazy='dynamic'))
 
 
 class Event(db.Model):
-    """Summary line.
+    """
 
     This is a class for an Event representation.
 
@@ -83,8 +91,8 @@ class Event(db.Model):
     """
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    id_eventful_com = db.Column(db.Integer, unique=True, index=True)
-    title = db.Column(db.String(100), unique=True, index=True)
+    id_eventful_com = db.Column(db.String(30), index=True)
+    title = db.Column(db.String(100), index=True)
     start_time = db.Column(db.Text)
     city_name = db.Column(db.Text)
     venue_address = db.Column(db.Text)
@@ -106,10 +114,7 @@ class Event(db.Model):
         self.url = url
 
 
-# db.drop_all()
-# db.create_all()
-
-
+db.create_all()
 # Views ################################################################################
 events_list = LinkedList()
 
@@ -117,8 +122,8 @@ events_list = LinkedList()
 @app.route('/')
 def index():
     '''
-    Returns the rendered template of html code.
-    '''
+   Returns the rendered template of html code.
+   '''
     today = str(date.today())
     user_key = 'SSqPdQ5xLbF6dwN2'
     event_location = request.args.get('city', '')
@@ -148,7 +153,6 @@ def index():
             events_list.insert(event)
 
     if request.args:
-        print(request.args)
         count_event_pages = count_event_pages(user_key=user_key, event_location=event_location, date_start=date_start,
                                               date_end=date_end, page_size=page_size)
         threads = []
@@ -226,15 +230,28 @@ def event(id):
                           latitude=i.latitude,
                           longitude=i.longitude,
                           url=i.url)
-            db.session.add(event)
-            try:
+
+            if Event.query.filter_by(id_eventful_com=i.id_eventful_com).first():
+                event.users.append(User.query.filter_by(email=session['email']).first())
                 db.session.commit()
-            except:
-                print('Event already in the DB.')
-                raise BaseException()
+            else:
+                db.session.add(event)
+                db.session.commit()
+                event.users.append(User.query.filter_by(email=session['email']).first())
+                db.session.commit()
 
     url = 'http://eventful.com/events/formation-sur-le-changemen-/{}'.format(id)
     return render_template('event.html', url=url)
+
+
+@app.route('/profile/<user_id>')
+def profile(user_id):
+    '''
+    Returns the rendered template of html code for user history page.
+    '''
+    user = User.query.filter_by(id=user_id).first()
+    events = user.events
+    return render_template('profile.html', events=events)
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -245,7 +262,7 @@ def register():
 
     class RegistrationForm(FlaskForm):
         '''Initialises a RegistrationForm.
-        Returns:
+            Returns:
             'register.html'
         '''
         email = StringField('email', validators=[DataRequired(), Email()])
@@ -287,8 +304,8 @@ def register():
             t.start()
 
             return redirect(url_for('confirm_email'))
-        else:
-            print("1ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        # else:
+        #     print("1ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     return render_template('register.html', form=form)
 
@@ -311,13 +328,17 @@ def login():
         email = form.email.data
         password2 = form.password.data
         user = User.query.filter_by(email=email).first()
-        if form.validate_on_submit():
-            if all([user, user.password == password2, user.confirmed]):
-                session['email'] = email
-                session['name'] = user.name
-                return redirect(url_for('index'))
+        if user:
+            if form.validate_on_submit():
+                if all([user, user.password == password2, user.confirmed]):
+                    session['email'] = email
+                    session['name'] = user.name
+                    session['user_id'] = user.id
+                    return redirect(url_for('index'))
+                else:
+                    return redirect(url_for('login_error'))
         else:
-            print("ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return redirect(url_for('login_error'))
 
     return render_template('login.html', form=form)
 
@@ -325,8 +346,8 @@ def login():
 @app.route('/sign_out')
 def sign_out():
     '''
-   Returns the rendered template to sign out.
-   '''
+    Returns the rendered template to sign out.
+    '''
     if session.get('email', False):
         session.pop('email')
     return redirect(url_for('index'))
@@ -352,9 +373,17 @@ def success_registration():
 @app.route('/email_already_exists')
 def email_already_exists():
     '''
-     Returns the rendered template if email already exists.
-     '''
+    Returns the rendered template if email already exists.
+    '''
     return render_template('register_success.html')
+
+
+@app.route('/login_error')
+def login_error():
+    '''
+    Returns the rendered template if user enters incorrect data.
+    '''
+    return render_template('login_error.html')
 
 
 # Start Programm ######################################################################

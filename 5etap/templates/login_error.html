@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Registration | Login ERROR!</title>
+</head>
+<body>
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Something wrong!</h4>
+    <p>Your email/password is wrong or not found !!! Please, check correct input and <a href="{{ url_for('login', _external=True) }}">SIGN IN</a>
+        again or try to <a href="{{ url_for('register', _external=True) }}">REGISTRATION</a></p>
+</div>
+</body>
+</html>

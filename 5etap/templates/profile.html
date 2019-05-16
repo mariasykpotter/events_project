@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Events | Profile</title>
+
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        <a class="nav-link" href="{{ url_for('index') }}">Home<span class="sr-only"></span></a>
+        {% if session.get('email', False) %}
+        <a class="btn btn-outline-secondary mr-2" href="{{ url_for('sign_out') }}">Sign-out</a>
+        <a class="btn btn-info" href="{{ url_for('profile', user_id=session.get('user_id', '')) }}">{{
+            session.get('name', 'user') }}</a>
+        {% else %}
+        <a class="btn btn-outline-secondary mr-2" href="{{ url_for('login') }}">Sign-in</a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </form>
+    <!--{% if session.get('email', False) %}-->
+    <!--<form class="form-inline" method="GET">-->
+        <!--<input class="form-control mr-sm-2" type="search" required placeholder="City" aria-label="Search" name="city"-->
+               <!--value="">-->
+        <!--<input class="form-control mr-sm-2" type="date" required placeholder="Start Date" aria-label="Start Date"-->
+               <!--name="date_start" value="{{ today }}">-->
+        <!--<input class="form-control mr-sm-2" type="date" required placeholder="End Date" aria-label="End Date"-->
+               <!--name="date_end" value="{{ today }}">-->
+        <!--<a class="btn btn-outline-success my-2 my-sm-0" type="submit" href="{{ url_for('index') }}">Search</a>-->
+    <!--</form>-->
+    {% endif %}
+</nav>
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Title</th>
+        <th scope="col">City</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in events %}
+    <tr>
+        <td>{{ i.start_time[:10] }}</td>
+        <td>{{ i.title }}</td>
+        <!--<td><a href="{{ i.url }}" target="_blank">{{ i.title }}</a></td>-->
+        <td>{{ i.city_name }}, {{i.venue_address}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
