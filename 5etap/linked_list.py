@@ -4,12 +4,12 @@ class LinkedList(object):
         Inner class of LinkedList. Contains a blueprint for a node of the LinkedList
         """
 
-        def __init__(self, data, next=None):
+        def __init__(self, v, n=None):
             """
-            Initializes a List node with payload data and link n
+            Initializes a List node with payload v and link n
             """
-            self.data = data
-            self.next = next
+            self.value = v
+            self.next = n
 
     def __init__(self):
         """
@@ -17,15 +17,15 @@ class LinkedList(object):
         """
         self.head = None
 
-    def insert(self, data):
+    def insert(self, v):
         """
-        Adds an item with payload data to beginning of the list
+        Adds an item with payload v to beginning of the list
         in O(1) time
         """
-        Node = self.Node(data, self.head)
+        Node = self.Node(v, self.head)
         self.head = Node
 
-    def __len__(self):
+    def size(self):
         """
         Returns the current size of the list. O(n), linear time
         """
@@ -36,53 +36,64 @@ class LinkedList(object):
             current = current.next
         return count
 
-    def search(self, data):
+    def search(self, v):
         """
-        Searches the list for a node with payload data. Returns the node object or None if not found. Time complexity is O(n) in worst case.
+        Searches the list for a node with payload v. Returns the node object or None if not found. Time complexity is O(n) in worst case.
         """
         current = self.head
         found = False
         while current and not found:
-            if current.data == data:
+            if current.value == v:
                 found = True
             else:
                 current = current.next
         if not current:
             return None
-        return found
+        return current
 
-    def delete(self, data):
+    def delete(self, v):
         """
-        Searches the list for a node with payload data. Returns the node object or None if not found. Time complexity is O(n) in worst case.
+        Searches the list for a node with payload v. Returns the node object or None if not found. Time complexity is O(n) in worst case.
         """
         current = self.head
-        predataious = None
+        previous = None
         found = False
         while current and not found:
-            if current.data == data:
+            if current.value == v:
                 found = True
             else:
-                predataious = current
+                previous = current
                 current = current.next
         # nothing found, return None
         if not current:
             return None
         # the case where first item is being deleted
-        if not predataious:
+        if not previous:
             self.head = current.next
         # item from inside of the list is being deleted
         else:
-            predataious.next = current.next
+            previous.next = current.next
 
         return current
 
+    # def __str__(self):
+    #     """
+    #     Prints the current list in the form of a Python list
+    #     """
+    #     current = self.head
+    #     toPrint = []
+    #     while current != None:
+    #         toPrint.append(current.value)
+    #         current = current.next
+    #     return str(toPrint)
+
     def __iter__(self):
         """
-        Iterate odataer the linked list.
+        Iterate over the linked list.
         """
         current = self.head
         while current is not None:
-            yield current.data
+            yield current.value
             current = current.next
 
     def __str__(self):

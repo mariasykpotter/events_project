@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Dear {{name}},
+
+Thank you for registering to Events.
+
+Please follow to the link for continue registration:
+<a href="{{ url_for('success_registration', _external=True) }}">CONFIRM EMAIL</a>
+</body>
+</html>

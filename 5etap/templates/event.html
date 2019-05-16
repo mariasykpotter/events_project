@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .event {
+            width: 56%;
+            height: 900px;
+            position: absolute;
+            left: 0;
+        }
+
+        .map {
+            width: 44%;
+            height: 900px;
+            position: absolute;
+            right: 0;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Events | Main Page</title>
+
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        {% if session.get('email', False) %}
+        <a class="btn btn-outline-secondary mr-2" href="{{ url_for('sign_out') }}">Sign-out</a>
+        <button type="button" class="btn btn-info">{{ session.get('name', 'user') }}</button>
+        {% else %}
+        <a class="btn btn-outline-secondary mr-2" href="{{ url_for('login') }}">Sign-in</a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </form>
+    {% if session.get('email', False) %}
+    <form class="form-inline" method="GET">
+        <input class="form-control mr-sm-2" type="search" required placeholder="City" aria-label="Search" name="city"
+               value="">
+        <input class="form-control mr-sm-2" type="date" required placeholder="Start Date" aria-label="Start Date"
+               name="date_start" value="{{ today }}">
+        <input class="form-control mr-sm-2" type="date" required placeholder="End Date" aria-label="End Date"
+               name="date_end" value="{{ today }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    {% endif %}
+</nav>
+
+<iframe class="event" src="{{ url }}" frameborder="0"></iframe>
+<iframe class="map" src="{{ url_for('location') }}" frameborder="0"></iframe>
+<!--{% if request.args %}-->
+<!--<iframe class="map" src="{{ url_for('map') }}" frameborder="0"></iframe>-->
+<!--{% else %}-->
+<!--<iframe class="map" src="{{ url_for('map') }}" frameborder="0"></iframe>-->
+<!--{% endif %}-->
+</body>
+</html>
