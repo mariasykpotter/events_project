@@ -23,7 +23,8 @@ class Configuration:
     This is a class which decribes an app configuration.
     '''
     DEBUG = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///c:/1/cursova/new/5etap/data/data.db'
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///events_project/5etap/data/data.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['SECRET_KEY'] = 'very_secret_key'
