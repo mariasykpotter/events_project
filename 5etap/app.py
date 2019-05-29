@@ -4,11 +4,12 @@ import time
 import folium
 import geopy
 import requests
-from _datetime import date
+from datetime import date
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from sqlalchemy.exc import IntegrityError
 from wtforms import StringField, PasswordField
 from wtforms.validators import Email, EqualTo, DataRequired
 
@@ -19,20 +20,21 @@ app = Flask(__name__)
 
 
 class Configuration:
+
     '''
     This is a class which decribes an app configuration.
     '''
-    DEBUG = True
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///events_project/5etap/data/data.db'
+
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['SECRET_KEY'] = 'very_secret_key'
-    WTF_CSRF_ENABLED = False
+    app.config['WTF_CSRF_ENABLED'] = False
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 465
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
+    app.config['DEBUG'] = True
     app.config['MAIL_USERNAME'] = 'testovemylo805@gmail.com'
     app.config['MAIL_PASSWORD'] = 'january2019'
 
@@ -115,7 +117,6 @@ class Event(db.Model):
         self.url = url
 
 
-db.create_all()
 # Views ################################################################################
 events_list = LinkedList()
 
@@ -204,17 +205,6 @@ def location():
 
 @app.route('/event/<id>')
 def event(id):
-    '''
-
-    Adds event objects on the map and to database session.
-
-    Parameters:
-        id:str
-    -----
-    Returns rendered template of eventful site
-    Returns:
-        html file 'event.html'
-    '''
     for i in events_list:
         if i.id_eventful_com == id:
             geolocator = geopy.Nominatim(user_agent='Event')
@@ -231,15 +221,20 @@ def event(id):
                           latitude=i.latitude,
                           longitude=i.longitude,
                           url=i.url)
+            db.session.add(event)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
-            if Event.query.filter_by(id_eventful_com=i.id_eventful_com).first():
-                event.users.append(User.query.filter_by(email=session['email']).first())
+            event = Event.query.filter_by(id_eventful_com=id).first()
+            user = User.query.filter_by(email=session['email']).first()
+            user.events.append(event)
+            db.session.add(user)
+            try:
                 db.session.commit()
-            else:
-                db.session.add(event)
-                db.session.commit()
-                event.users.append(User.query.filter_by(email=session['email']).first())
-                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
     url = 'http://eventful.com/events/formation-sur-le-changemen-/{}'.format(id)
     return render_template('event.html', url=url)
@@ -261,7 +256,7 @@ def register():
     Returns the rendered template of html code for a RegistrationForm
     '''
 
-    class RegistrationForm(FlaskForm):
+    class Regih strationForm(FlaskForm):
         '''Initialises a RegistrationForm.
             Returns:
             'register.html'
@@ -279,11 +274,11 @@ def register():
         password2 = form.password2.data
         if form.validate_on_submit():
             new_user = User(email=email, name=name, password=password2)
-            db.session.add(new_user)
-            try:
-                db.session.commit()
-            except:
+            if User.query.filter_by(email=email).first():
                 return redirect(url_for('email_already_exists'))
+            else:
+                db.session.add(new_user)
+                db.session.commit()
             msg = Message('confirm events registration', sender=('Events team', 'testovemylo805@gmail.com'),
                           recipients=[email])
             msg.html = render_template('mail.html', name=name)
@@ -305,8 +300,6 @@ def register():
             t.start()
 
             return redirect(url_for('confirm_email'))
-        # else:
-        #     print("1ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     return render_template('register.html', form=form)
 
@@ -376,7 +369,7 @@ def email_already_exists():
     '''
     Returns the rendered template if email already exists.
     '''
-    return render_template('register_success.html')
+    return render_template('email_already_exists.html')
 
 
 @app.route('/login_error')
